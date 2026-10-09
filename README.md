@@ -8,10 +8,21 @@ with an Ed25519-signed manifest that proves every mirror carries exactly the sam
 [![CI](https://github.com/mrzroot/dokhaneh/actions/workflows/ci.yml/badge.svg)](https://github.com/mrzroot/dokhaneh/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 ![Python](https://img.shields.io/badge/python-3.10%2B-blue)
+[![Release](https://img.shields.io/github/v/release/mrzroot/dokhaneh?sort=semver)](https://github.com/mrzroot/dokhaneh/releases)
+[![Stars](https://img.shields.io/github/stars/mrzroot/dokhaneh?style=flat&logo=github)](https://github.com/mrzroot/dokhaneh/stargazers)
 
-[English](#english) · [فارسی](#فارسی)
+[**Website**](https://mrzroot.github.io/dokhaneh/) · [English](#english) · [فارسی](#فارسی) · [Contributing](CONTRIBUTING.md)
+
+<a href="https://mrzroot.github.io/dokhaneh/"><img src="docs/screenshot.png" alt="dokhaneh: one release published to GitHub, ArvanCloud, Liara and Gitea with a signed manifest" width="860"></a>
 
 </div>
+
+### ⚡ Quickstart
+
+```bash
+pip install git+https://github.com/mrzroot/dokhaneh
+dokhaneh init && dokhaneh keygen   # dokhaneh.yml + an Ed25519 key pair; then `dokhaneh publish` or the GitHub Action
+```
 
 ---
 
