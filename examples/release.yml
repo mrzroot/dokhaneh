@@ -1,0 +1,35 @@
+# .github/workflows/release.yml — copy into your project.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write   # create the GitHub release
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # full history so the Gitea mirror push works
+
+      # ... build your artifacts into dist/ and your docs into site/ ...
+
+      - uses: mrzroot/dokhaneh@v0.1.0
+        with:
+          signing-key: ${{ secrets.DOKHANEH_SIGNING_KEY }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ARVAN_ACCESS_KEY: ${{ secrets.ARVAN_ACCESS_KEY }}
+          ARVAN_SECRET_KEY: ${{ secrets.ARVAN_SECRET_KEY }}
+          LIARA_ACCESS_KEY: ${{ secrets.LIARA_ACCESS_KEY }}
+          LIARA_SECRET_KEY: ${{ secrets.LIARA_SECRET_KEY }}
+          GITEA_TOKEN: ${{ secrets.GITEA_TOKEN }}
+
+      - uses: mrzroot/dokhaneh@v0.1.0
+        with:
+          command: verify
+          deep: "true"

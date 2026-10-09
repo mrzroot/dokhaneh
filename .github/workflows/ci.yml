@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: test (py${{ matrix.python }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python: ["3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: ruff check src tests
+      - run: ruff format --check src tests
+      - run: pytest -v
+
+  action-selftest:
+    name: composite action self-test (dry run)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Prepare a throwaway project + key
+        id: prep
+        run: |
+          pip install -q .
+          keys=$(dokhaneh keygen --json)
+          priv=$(echo "$keys" | python -c 'import json,sys; print(json.load(sys.stdin)["private_key"])')
+          pub=$(echo "$keys" | python -c 'import json,sys; print(json.load(sys.stdin)["public_key"])')
+          echo "::add-mask::$priv"
+          echo "priv=$priv" >> "$GITHUB_OUTPUT"
+          echo "DOKHANEH_PUBLIC_KEY=$pub" >> "$GITHUB_ENV"
+          mkdir -p examples/selftest/dist
+          echo hello > examples/selftest/dist/demo-0.0.1.txt
+      - name: Run the action (dry run)
+        id: dokhaneh
+        uses: ./
+        with:
+          config: examples/selftest/dokhaneh.yml
+          version: "0.0.1"
+          dry-run: "true"
+          signing-key: ${{ steps.prep.outputs.priv }}
+      - name: Check outputs
+        run: |
+          test "${{ steps.dokhaneh.outputs.failed }}" = "0"
+          dokhaneh verify --config examples/selftest/dokhaneh.yml --version 0.0.1 \
+            --manifest "${{ steps.dokhaneh.outputs.manifest }}"

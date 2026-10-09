@@ -1,0 +1,51 @@
+# dokhaneh.yml — publish every release to GitHub *and* domestic mirrors.
+# Secrets are never written here: reference environment variables with *_env keys.
+project:
+  name: myapp
+  # version: "1.2.0"        # optional; defaults to the git tag (GITHUB_REF_NAME) or --version
+  tag: "v{version}"
+  description: "My application"
+
+artifacts:                  # globs, relative to this file
+  - "dist/*.tar.gz"
+  - "dist/*.zip"
+
+docs: site/                 # optional static docs folder (e.g. mkdocs build output)
+
+signing:
+  private_key_env: DOKHANEH_SIGNING_KEY   # base64 Ed25519 seed (from `dokhaneh keygen`)
+  public_key: "PASTE_PUBLIC_KEY_HERE"
+
+install:                    # used by the generated install.sh
+  asset: "myapp-{version}-linux-amd64.tar.gz"
+  binary: myapp             # optional: extract this binary into $DOKHANEH_INSTALL_DIR
+
+targets:                    # order matters: global first, then domestic fallbacks
+  - name: github
+    type: github
+    repo: myorg/myapp
+    token_env: GITHUB_TOKEN
+
+  - name: arvan
+    type: arvan                                   # S3-compatible ArvanCloud Object Storage
+    endpoint: https://s3.ir-thr-at1.arvanstorage.ir
+    bucket: myapp-releases
+    public_url: https://myapp-releases.s3.ir-thr-at1.arvanstorage.ir
+    access_key_env: ARVAN_ACCESS_KEY
+    secret_key_env: ARVAN_SECRET_KEY
+
+  - name: liara
+    type: liara                                   # Liara Object Storage (S3-compatible)
+    endpoint: https://storage.c2.liara.site
+    bucket: myapp
+    public_url: https://myapp.storage.c2.liara.site
+    access_key_env: LIARA_ACCESS_KEY
+    secret_key_env: LIARA_SECRET_KEY
+
+  - name: gitea
+    type: gitea                                   # self-hosted / domestic Gitea or Forgejo
+    url: https://git.example.ir
+    repo: myorg/myapp
+    token_env: GITEA_TOKEN
+    mirror: true                                  # git push branch + tags
+    branch: main

@@ -1,0 +1,100 @@
+name: "Dokhaneh (دوخانه) — publish to GitHub + domestic mirrors"
+description: "Publish release artifacts and docs to GitHub and Iranian domestic hosts (ArvanCloud, Liara, Gitea) with an Ed25519-signed manifest."
+author: "mrzroot"
+branding:
+  icon: "home"
+  color: "green"
+
+inputs:
+  command:
+    description: "dokhaneh command to run: publish | sign | verify | status"
+    required: false
+    default: "publish"
+  config:
+    description: "Path to dokhaneh.yml"
+    required: false
+    default: "dokhaneh.yml"
+  version:
+    description: "Release version (default: project.version or the pushed tag)"
+    required: false
+    default: ""
+  only:
+    description: "Comma-separated target names to publish to (default: all)"
+    required: false
+    default: ""
+  dry-run:
+    description: "Sign and plan, upload nothing"
+    required: false
+    default: "false"
+  deep:
+    description: "For `verify`: download and hash every file on every mirror"
+    required: false
+    default: "false"
+  signing-key:
+    description: "Base64 Ed25519 private key (pass a secret). Falls back to env DOKHANEH_SIGNING_KEY."
+    required: false
+    default: ""
+  python-version:
+    description: "Python version to use"
+    required: false
+    default: "3.12"
+
+outputs:
+  version:
+    description: "Published version"
+    value: ${{ steps.run.outputs.version }}
+  manifest:
+    description: "Path to the signed manifest.json"
+    value: ${{ steps.run.outputs.manifest }}
+  succeeded:
+    description: "Number of targets published successfully"
+    value: ${{ steps.run.outputs.succeeded }}
+  failed:
+    description: "Number of targets that failed"
+    value: ${{ steps.run.outputs.failed }}
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Install dokhaneh
+      shell: bash
+      run: python -m pip install --disable-pip-version-check -q "${{ github.action_path }}"
+
+    - name: Run dokhaneh ${{ inputs.command }}
+      id: run
+      shell: bash
+      env:
+        INPUT_COMMAND: ${{ inputs.command }}
+        INPUT_CONFIG: ${{ inputs.config }}
+        INPUT_VERSION: ${{ inputs.version }}
+        INPUT_ONLY: ${{ inputs.only }}
+        INPUT_DRY_RUN: ${{ inputs.dry-run }}
+        INPUT_DEEP: ${{ inputs.deep }}
+        INPUT_SIGNING_KEY: ${{ inputs.signing-key }}
+      run: |
+        set -euo pipefail
+        if [ -n "$INPUT_SIGNING_KEY" ]; then
+          echo "::add-mask::$INPUT_SIGNING_KEY"
+          export DOKHANEH_SIGNING_KEY="$INPUT_SIGNING_KEY"
+        fi
+        args=("$INPUT_COMMAND" --config "$INPUT_CONFIG")
+        [ -n "$INPUT_VERSION" ] && args+=(--version "$INPUT_VERSION")
+        case "$INPUT_COMMAND" in
+          publish)
+            if [ -n "$INPUT_ONLY" ]; then
+              IFS=',' read -ra names <<< "$INPUT_ONLY"
+              for n in "${names[@]}"; do args+=(--only "$(echo "$n" | xargs)"); done
+            fi
+            [ "$INPUT_DRY_RUN" = "true" ] && args+=(--dry-run)
+            ;;
+          verify)
+            [ "$INPUT_DEEP" = "true" ] && args+=(--deep)
+            ;;
+          sign|status) ;;
+          *) echo "::error::unknown command '$INPUT_COMMAND'"; exit 1 ;;
+        esac
+        dokhaneh "${args[@]}"

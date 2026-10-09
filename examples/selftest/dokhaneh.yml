@@ -1,0 +1,23 @@
+# Used by CI to dry-run the composite action. No real credentials needed.
+project:
+  name: demo
+artifacts:
+  - "dist/*.txt"
+signing:
+  public_key: "${DOKHANEH_PUBLIC_KEY}"
+install:
+  asset: "demo-{version}.txt"
+targets:
+  - name: github
+    type: github
+    repo: mrzroot/dokhaneh-demo
+  - name: arvan
+    type: arvan
+    bucket: demo-releases
+  - name: liara
+    type: liara
+    bucket: demo
+  - name: gitea
+    type: gitea
+    url: https://git.example.ir
+    repo: demo/demo
