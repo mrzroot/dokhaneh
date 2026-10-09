@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en" data-lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dokhaneh · Releases that survive a national-only internet</title>
+<meta name="description" content="Publish every release to GitHub and Iranian domestic hosts (ArvanCloud, Liara, Gitea) in one step, with an Ed25519-signed manifest and a fallback install.sh that verifies signatures and hashes. Not a circumvention tool.">
+<meta name="theme-color" content="#f6efe2">
+<meta name="color-scheme" content="light">
+<meta property="og:title" content="dokhaneh · دوخانه">
+<meta property="og:description" content="One release, two homes: GitHub and domestic mirrors, signed and verified.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mrzroot.github.io/dokhaneh/">
+<link rel="canonical" href="https://mrzroot.github.io/dokhaneh/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<script>(function(){var d=document.documentElement,l='en';try{l=new URLSearchParams(location.search).get('lang')||localStorage.getItem('mrz-lang')||'en'}catch(e){}if(l==='fa'){d.lang='fa';d.dir='rtl';d.setAttribute('data-lang','fa')}})()</script>
+<style>
+@font-face{font-family:Vazirmatn;src:url(fonts/vazirmatn-arabic.woff2) format('woff2');font-weight:400 800;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+200C-200E,U+FB50-FDFF,U+FE70-FEFC}
+:root{--paper:#f6efe2;--paper2:#efe4d0;--card:#fffaf1;--ink:#1d2a5c;--ink2:#3d4775;--mut:#6b6a7d;--line:#e2d4bb;--line2:#d4c09d;
+--tq:#139a9c;--tq2:#3cc2c0;--gold:#d9a23a;--gold2:#f3c969;--terra:#c4553a;--ok:#13895c;
+--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;--sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,Vazirmatn,sans-serif;
+--fa:Vazirmatn,"Segoe UI",Tahoma,sans-serif;--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+*{box-sizing:border-box}html{scroll-behavior:smooth;background:var(--paper)}
+body{margin:0;color:var(--ink);font:17px/1.7 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden;
+background-image:radial-gradient(rgba(29,42,92,.05) 1px,transparent 1px);background-size:22px 22px}
+html[data-lang=fa] body{font-family:var(--fa);line-height:1.95}
+html[data-lang=en] [lang=fa],html[data-lang=fa] [lang=en]{display:none!important}
+a{color:var(--tq)}code,.mono{font-family:var(--mono)}
+.wrap{max-width:1160px;margin:0 auto;padding:0 26px}
+.girih{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23d9a23a' stroke-opacity='.35' stroke-width='1'%3E%3Cpath d='M40 4l10 26 26 10-26 10-10 26-10-26L4 40l26-10z'/%3E%3Cpath d='M40 20l6 14 14 6-14 6-6 14-6-14-14-6 14-6z'/%3E%3Cpath d='M0 0l20 20M80 0L60 20M0 80l20-20M80 80L60 60'/%3E%3C/g%3E%3C/svg%3E")}
+/* header */
+.top{position:sticky;top:0;z-index:20;background:rgba(246,239,226,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:22px;height:66px}
+.brand{display:flex;align-items:center;gap:10px;color:var(--ink);font:700 19px var(--serif);text-decoration:none}
+.brand img{width:32px;height:32px}.brand span[lang=fa]{font-family:var(--fa);font-weight:800}
+.top nav{display:flex;gap:22px;margin-inline-start:auto;align-items:center}
+.top nav a{color:var(--ink2);font-size:15px;text-decoration:none}.top nav a:hover{color:var(--tq)}
+.lang{display:inline-flex;border:1.5px solid var(--ink);border-radius:999px;overflow:hidden}
+.lang button{all:unset;cursor:pointer;padding:4px 12px;font:700 13px var(--sans);color:var(--ink)}
+.lang button[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+/* hero */
+.hero{padding:70px 0 80px;position:relative;overflow:hidden}
+.hero .girih{position:absolute;inset:0;opacity:.6;-webkit-mask-image:linear-gradient(90deg,transparent,#000 60%);mask-image:linear-gradient(90deg,transparent,#000 60%)}
+html[dir=rtl] .hero .girih{-webkit-mask-image:linear-gradient(270deg,transparent,#000 60%);mask-image:linear-gradient(270deg,transparent,#000 60%)}
+.hgrid{position:relative;display:grid;grid-template-columns:1fr 1.05fr;gap:52px;align-items:center}
+.hgrid>*{min-width:0}
+.kick{display:inline-flex;gap:10px;align-items:center;font:600 13px var(--mono);color:var(--terra);letter-spacing:.06em;text-transform:uppercase}
+html[data-lang=fa] .kick{font-family:var(--fa);letter-spacing:0;font-size:15px;text-transform:none}
+.kick:before{content:"";width:28px;height:2px;background:var(--terra)}
+h1{font:600 clamp(40px,5.8vw,74px)/1.02 var(--serif);letter-spacing:-.02em;margin:18px 0 20px}
+html[data-lang=fa] h1{font-family:var(--fa);font-weight:800;line-height:1.35;letter-spacing:0}
+h1 em{font-style:italic;color:var(--tq)}html[data-lang=fa] h1 em{font-style:normal}
+h1 .two{position:relative;white-space:nowrap}
+h1 .two:after{content:"";position:absolute;inset:auto 0 .06em;height:.16em;background:var(--gold2);z-index:-1;border-radius:3px}
+.lead{font-size:clamp(17px,1.9vw,20px);color:var(--ink2);max-width:560px;margin:0}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 20px}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:13px 20px;border-radius:999px;font-weight:700;font-size:15.5px;border:1.5px solid var(--ink);color:var(--ink);text-decoration:none;background:transparent;transition:.2s}
+.btn:hover{background:var(--ink);color:var(--paper)}
+.btn.p{background:var(--ink);color:var(--paper)}.btn.p:hover{background:var(--tq);border-color:var(--tq)}
+.inst{display:flex;align-items:center;gap:10px;max-width:560px;background:var(--ink);color:#e9e6ff;border-radius:14px;padding:12px 12px 12px 16px;font:14px/1.4 var(--mono);direction:ltr;text-align:left;box-shadow:0 14px 30px -18px rgba(29,42,92,.7)}
+.inst .ps{color:var(--gold2)}.inst code{flex:1;overflow-x:auto;white-space:nowrap}
+.copy{all:unset;cursor:pointer;font:700 12px var(--sans);color:var(--gold2);border:1px solid rgba(243,201,105,.5);padding:5px 11px;border-radius:999px}
+.copy.ok{color:#7ff0c1;border-color:#7ff0c1}
+.fine{margin-top:14px;font-size:14px;color:var(--mut)}
+/* map */
+.map{background:var(--card);border:1.5px solid var(--ink);border-radius:22px;box-shadow:10px 10px 0 var(--ink);overflow:hidden;direction:ltr}
+.mhead{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1.5px solid var(--ink);font:600 13px var(--mono);background:var(--paper2)}
+.mhead b{color:var(--ink)}.mhead span{margin-left:auto;color:var(--mut);font-weight:500}
+.toggle{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font:700 12px var(--sans);color:var(--ink);padding:5px 10px 5px 6px;border:1.5px solid var(--ink);border-radius:999px;background:var(--card)}
+.toggle i{width:28px;height:16px;border-radius:99px;background:#cfc3ad;position:relative;transition:.2s}
+.toggle i:after{content:"";position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:#fff;transition:.2s}
+.toggle[aria-pressed=true] i{background:var(--terra)}.toggle[aria-pressed=true] i:after{left:14px}
+svg.net{display:block;width:100%;height:auto}
+.net .lnk{stroke:var(--line2);stroke-width:2.5;fill:none;stroke-dasharray:6 6}
+.net .lnk.on{stroke:var(--tq);stroke-dasharray:none}
+.net .lnk.cut{stroke:var(--terra);stroke-dasharray:3 7}
+.net .node rect{fill:var(--card);stroke:var(--ink);stroke-width:2}
+.net .node.g rect{fill:#e9eefb}.net .node.d rect{fill:#e3f4f2}
+.net .node.down rect{fill:#fbe4dc;stroke:var(--terra)}
+.net text{font:600 13px var(--mono);fill:var(--ink)}.net .sm{font:500 11px var(--mono);fill:var(--mut)}
+.net .st{font:700 11px var(--mono)}.net .st.ok{fill:var(--ok)}.net .st.bad{fill:var(--terra)}
+.net .pk{fill:var(--gold)}
+.mterm{background:#141d42;color:#dfe3ff;font:12.5px/1.6 var(--mono);padding:14px 16px;height:178px;overflow:hidden;text-align:left}
+.mterm p{margin:0;white-space:pre-wrap;word-break:break-all}.mterm .y{color:var(--gold2)}.mterm .g{color:#7ff0c1}.mterm .r{color:#ff9b85}.mterm .d{color:#8c93c2}
+/* sections */
+section{padding:96px 0}
+.band{background:var(--ink);color:#eceaf8}
+.band .sub{color:#c4c6e6}.band h2{color:#fff}
+.eyebrow{font:700 12.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--terra)}
+.band .eyebrow{color:var(--gold2)}
+html[data-lang=fa] .eyebrow{font-family:var(--fa);letter-spacing:0;font-size:15px;text-transform:none}
+h2{font:600 clamp(30px,4vw,48px)/1.1 var(--serif);letter-spacing:-.015em;margin:10px 0 16px}
+html[data-lang=fa] h2{font-family:var(--fa);font-weight:800;line-height:1.45;letter-spacing:0}
+.sub{color:var(--ink2);max-width:720px;margin:0 0 44px;font-size:18px}
+.story{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.story>div{padding:28px;border-radius:20px;border:1.5px solid rgba(255,255,255,.18)}
+.story h3{margin:0 0 8px;font:600 24px var(--serif)}html[data-lang=fa] .story h3{font-family:var(--fa);font-weight:800}
+.story p{margin:0;color:#c4c6e6}
+.story .b{background:rgba(196,85,58,.14);border-color:rgba(255,155,133,.4)}.story .a{background:rgba(19,154,156,.16);border-color:rgba(60,194,192,.45)}
+.story .tag{display:inline-block;font:700 11px var(--mono);padding:3px 9px;border-radius:99px;margin-bottom:12px;text-transform:uppercase;letter-spacing:.08em}
+.story .b .tag{background:#ff9b85;color:#3b0f05}.story .a .tag{background:#7ff0c1;color:#063626}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;counter-reset:s;position:relative}
+.step{padding:26px 22px 22px;border-top:3px solid var(--ink);position:relative}
+.step:before{counter-increment:s;content:counter(s,persian);position:absolute;top:-19px;inset-inline-start:22px;width:34px;height:34px;border-radius:50%;background:var(--gold2);border:3px solid var(--ink);display:grid;place-items:center;font:800 15px var(--fa);color:var(--ink)}
+html[data-lang=en] .step:before{content:counter(s);font-family:var(--serif)}
+.step h3{margin:8px 0 6px;font:600 21px var(--serif)}html[data-lang=fa] .step h3{font-family:var(--fa);font-weight:800}
+.step p{margin:0;color:var(--ink2);font-size:15.5px}.step code{font-size:13px;color:var(--terra)}
+.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.fc{background:var(--card);border:1.5px solid var(--line2);border-radius:20px;padding:26px;position:relative;overflow:hidden}
+.fc:after{content:"";position:absolute;width:90px;height:90px;inset-inline-end:-30px;top:-30px;border-radius:50%;border:12px solid var(--c,var(--gold2));opacity:.35}
+.fc .ic{font-size:26px}.fc h3{margin:10px 0 6px;font:600 21px var(--serif)}html[data-lang=fa] .fc h3{font-family:var(--fa);font-weight:800}
+.fc p{margin:0;color:var(--ink2);font-size:15.5px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:start}.two>*{min-width:0}
+pre{margin:0;background:#141d42;color:#e3e6ff;border-radius:18px;padding:22px;overflow:auto;font:13.5px/1.7 var(--mono);direction:ltr;text-align:left;border:1.5px solid var(--ink)}
+pre .c{color:#8c93c2}pre .k{color:var(--gold2)}pre .s{color:#7ff0c1}
+.tree{background:var(--card);color:var(--ink);border-color:var(--line2)}.tree .c{color:var(--mut)}.tree .k{color:var(--terra)}.tree .s{color:var(--tq)}
+.sec{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.sec li{background:var(--card);border:1.5px solid var(--line2);border-radius:16px;padding:16px 18px 16px 52px;position:relative;color:var(--ink2);font-size:15.5px}
+html[dir=rtl] .sec li{padding:16px 52px 16px 18px}
+.sec li:before{content:"✓";position:absolute;inset-inline-start:16px;top:15px;width:24px;height:24px;border-radius:50%;background:var(--tq);color:#fff;display:grid;place-items:center;font:800 13px var(--sans)}
+details{background:var(--card);border:1.5px solid var(--line2);border-radius:16px;padding:18px 22px;margin-bottom:12px}
+summary{cursor:pointer;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}summary:after{content:"+";font:700 22px/1 var(--serif);color:var(--terra)}details[open] summary:after{content:"−"}
+details p{margin:10px 0 0;color:var(--ink2)}
+.legal{margin-top:28px;padding:20px 22px;border-radius:16px;background:var(--ink);color:#e6e6f7;font-size:15px}
+.legal b{color:var(--gold2)}
+footer{border-top:1.5px solid var(--line2);padding:34px 0 52px;color:var(--mut);font-size:14.5px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between}footer a{color:var(--ink2)}
+@media (max-width:980px){.hgrid,.two,.story{grid-template-columns:1fr}.feat{grid-template-columns:1fr 1fr}.steps{grid-template-columns:1fr 1fr;row-gap:34px}}
+@media (max-width:640px){.top nav a.h{display:none}.feat,.steps{grid-template-columns:1fr}.hero{padding:44px 0 60px}section{padding:70px 0}.map{box-shadow:6px 6px 0 var(--ink)}.mhead span{display:none}h1 .two{white-space:normal}.mterm{font-size:10.5px;overflow-x:auto}.mterm p{white-space:pre;word-break:normal}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="#"><img src="favicon.svg" alt=""><span lang="en">dokhaneh</span><span lang="fa">دوخانه</span></a>
+  <nav>
+    <a class="h" href="#how"><span lang="en">How it works</span><span lang="fa">روش کار</span></a>
+    <a class="h" href="#start"><span lang="en">Quick start</span><span lang="fa">شروع سریع</span></a>
+    <a class="h" href="#faq"><span lang="en">FAQ</span><span lang="fa">پرسش‌ها</span></a>
+    <a href="https://github.com/mrzroot/dokhaneh">GitHub</a>
+    <div class="lang" role="group" aria-label="Language"><button type="button" data-set-lang="en" aria-pressed="true">EN</button><button type="button" data-set-lang="fa" aria-pressed="false">فا</button></div>
+  </nav>
+</div></header>
+
+<main>
+<div class="hero"><div class="girih"></div><div class="wrap hgrid">
+  <div>
+    <div class="kick"><span lang="en">v0.1.0 · open source · MIT</span><span lang="fa">نسخهٔ ۰٫۱٫۰ · متن‌باز · MIT</span></div>
+    <h1><span lang="en">One release, <span class="two">two homes.</span> <em>Always installable.</em></span><span lang="fa">یک نسخه، <span class="two">دو خانه.</span> <em>همیشه قابل نصب.</em></span></h1>
+    <p class="lead"><span lang="en">dokhaneh publishes every release to GitHub <b>and</b> to domestic hosts (ArvanCloud, Liara, a Gitea mirror) in one step. An Ed25519-signed manifest proves every copy is identical, and a fallback <code>install.sh</code> keeps working when the internet goes national-only.</span><span lang="fa">دوخانه هر نسخه را در یک گام هم در گیت‌هاب و <b>هم</b> در میزبان‌های داخلی (آروان‌کلاد، لیارا و آینهٔ گیتی) منتشر می‌کند. یک مانیفست امضاشده با Ed25519 ثابت می‌کند همهٔ نسخه‌ها یکسان‌اند و یک <code>install.sh</code> جایگزین وقتی اینترنت ملی می‌شود هم کار می‌کند.</span></p>
+    <div class="cta">
+      <a class="btn p" href="#start"><span lang="en">Get started →</span><span lang="fa">شروع کنید ←</span></a>
+      <a class="btn" href="https://github.com/mrzroot/dokhaneh"><span lang="en">GitHub</span><span lang="fa">گیت‌هاب</span></a>
+      <a class="btn" href="https://github.com/mrzroot/dokhaneh/releases/latest"><span lang="en">Release</span><span lang="fa">انتشار</span></a>
+    </div>
+    <div class="inst"><span class="ps">$</span><code id="c-pip">pip install git+https://github.com/mrzroot/dokhaneh</code><button class="copy" type="button" data-copy="c-pip"><span lang="en">Copy</span><span lang="fa">کپی</span></button></div>
+    <p class="fine"><span lang="en">Not a circumvention tool: it only uses legitimate hosts you control.</span><span lang="fa">ابزار دور زدن فیلترینگ نیست: فقط از میزبان‌های قانونی خودتان استفاده می‌کند.</span></p>
+  </div>
+
+  <div class="map" aria-label="Animated diagram: one release published to GitHub and three domestic mirrors">
+    <div class="mhead"><b>dokhaneh status</b><button class="toggle" id="cut" type="button" aria-pressed="false"><i></i><span lang="en">national-only internet</span><span lang="fa">اینترنت ملی</span></button><span>v1.2.0</span></div>
+    <svg class="net" viewBox="0 0 560 300" role="img" aria-label="network">
+      <path id="l0" class="lnk on" d="M110 150 C 200 150, 220 60, 330 60"/>
+      <path id="l1" class="lnk on" d="M110 150 C 200 150, 230 130, 330 130"/>
+      <path id="l2" class="lnk on" d="M110 150 C 200 150, 230 200, 330 200"/>
+      <path id="l3" class="lnk on" d="M110 150 C 200 150, 220 268, 330 268"/>
+      <g class="node"><rect x="20" y="118" width="96" height="64" rx="12"/><text x="68" y="146" text-anchor="middle">release</text><text class="sm" x="68" y="164" text-anchor="middle">v1.2.0 · sig</text></g>
+      <g class="node g" id="n0"><rect x="330" y="38" width="210" height="44" rx="10"/><text x="344" y="58">github</text><text class="sm" x="344" y="74">global</text><text class="st ok" id="s0" x="528" y="66" text-anchor="end">● UP</text></g>
+      <g class="node d" id="n1"><rect x="330" y="108" width="210" height="44" rx="10"/><text x="344" y="128">arvan</text><text class="sm" x="344" y="144">s3.ir-thr-at1 · domestic</text><text class="st ok" x="528" y="136" text-anchor="end">● UP</text></g>
+      <g class="node d" id="n2"><rect x="330" y="178" width="210" height="44" rx="10"/><text x="344" y="198">liara</text><text class="sm" x="344" y="214">storage.c2 · domestic</text><text class="st ok" x="528" y="206" text-anchor="end">● UP</text></g>
+      <g class="node d" id="n3"><rect x="330" y="246" width="210" height="44" rx="10"/><text x="344" y="266">gitea</text><text class="sm" x="344" y="282">git.example.ir · domestic</text><text class="st ok" x="528" y="274" text-anchor="end">● UP</text></g>
+      <g id="pk"></g>
+    </svg>
+    <div class="mterm" id="term"></div>
+  </div>
+</div></div>
+
+<section class="band"><div class="wrap">
+  <div class="eyebrow"><span lang="en">Why two homes</span><span lang="fa">چرا دو خانه</span></div>
+  <h2><span lang="en">Your users shouldn't lose your software overnight.</span><span lang="fa">کاربرانتان نباید یک‌شبه نرم‌افزارتان را از دست بدهند.</span></h2>
+  <p class="sub"><span lang="en">When Iran's internet goes national-only or GitHub drops off a whitelist, release downloads, install scripts and docs disappear for everyone inside the country. dokhaneh keeps a second, verifiable home for them.</span><span lang="fa">وقتی اینترنت ایران ملی می‌شود یا گیت‌هاب از فهرست سفید بیرون می‌افتد، فایل‌های انتشار، اسکریپت نصب و مستندات برای همهٔ کاربران داخل کشور ناپدید می‌شوند. دوخانه برایشان یک خانهٔ دوم و قابل‌راستی‌آزمایی نگه می‌دارد.</span></p>
+  <div class="story">
+    <div class="b"><span class="tag"><span lang="en">without</span><span lang="fa">بدون دوخانه</span></span><h3><span lang="en">curl … | sh → timeout</span><span lang="fa">curl … | sh ← مهلت تمام شد</span></h3><p><span lang="en">Install scripts hard-code github.com. Users copy random re-uploads from Telegram channels with no way to know if they were tampered with.</span><span lang="fa">اسکریپت‌های نصب به github.com گره خورده‌اند. کاربران نسخه‌های دست‌به‌دست‌شده را از کانال‌های تلگرام برمی‌دارند و راهی برای فهمیدن دست‌کاری ندارند.</span></p></div>
+    <div class="a"><span class="tag"><span lang="en">with dokhaneh</span><span lang="fa">با دوخانه</span></span><h3><span lang="en">github ✖ → arvan ✓ verified</span><span lang="fa">github ✖ ← arvan ✓ تأییدشده</span></h3><p><span lang="en">The installer tries GitHub first, falls back to your domestic mirrors, checks the Ed25519 signature and every SHA-256, and installs the exact bytes you published.</span><span lang="fa">نصب‌کننده اول گیت‌هاب را امتحان می‌کند، بعد سراغ آینه‌های داخلی می‌رود، امضای Ed25519 و همهٔ هش‌های SHA-256 را بررسی می‌کند و دقیقاً همان بایت‌هایی را نصب می‌کند که شما منتشر کرده‌اید.</span></p></div>
+  </div>
+</div></section>
+
+<section id="how"><div class="wrap">
+  <div class="eyebrow"><span lang="en">How it works</span><span lang="fa">روش کار</span></div>
+  <h2><span lang="en">Sign once. Mirror everywhere. Verify anywhere.</span><span lang="fa">یک بار امضا، همه‌جا آینه، هر جا راستی‌آزمایی.</span></h2>
+  <p class="sub"><span lang="en">One command in your tag workflow does all four steps. One mirror failing never blocks the others.</span><span lang="fa">یک دستور در گردش‌کار تگ هر چهار گام را انجام می‌دهد. خرابی یک آینه بقیه را متوقف نمی‌کند.</span></p>
+  <div class="steps">
+    <div class="step"><h3><span lang="en">Manifest</span><span lang="fa">مانیفست</span></h3><p><span lang="en">Hashes every artifact, the docs archive and install.sh into <code>manifest.json</code> (SHA-256 + size).</span><span lang="fa">هش همهٔ فایل‌ها، آرشیو مستندات و install.sh را در <code>manifest.json</code> (SHA-256 و اندازه) می‌نویسد.</span></p></div>
+    <div class="step"><h3><span lang="en">Sign</span><span lang="fa">امضا</span></h3><p><span lang="en">Signs it with your Ed25519 key from <code>DOKHANEH_SIGNING_KEY</code>; refuses if the key doesn't match the public one.</span><span lang="fa">با کلید Ed25519 از <code>DOKHANEH_SIGNING_KEY</code> امضا می‌کند و اگر کلید با کلید عمومی نخواند، امضا نمی‌کند.</span></p></div>
+    <div class="step"><h3><span lang="en">Publish</span><span lang="fa">انتشار</span></h3><p><span lang="en">Uploads byte-identical copies to GitHub Releases, ArvanCloud and Liara S3, and a Gitea release plus a git mirror.</span><span lang="fa">نسخه‌های کاملاً یکسان را در GitHub Releases، فضای S3 آروان‌کلاد و لیارا و انتشار و آینهٔ گیتی بارگذاری می‌کند.</span></p></div>
+    <div class="step"><h3><span lang="en">Verify</span><span lang="fa">راستی‌آزمایی</span></h3><p><span lang="en"><code>verify --deep</code> proves every mirror serves the same signed release; <code>status</code> shows what's reachable from here.</span><span lang="fa"><code>verify --deep</code> ثابت می‌کند همهٔ آینه‌ها همان نسخهٔ امضاشده را دارند و <code>status</code> نشان می‌دهد از همین‌جا چه چیزی در دسترس است.</span></p></div>
+  </div>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap">
+  <div class="feat">
+    <div class="fc" style="--c:var(--tq2)"><div class="ic">🏠</div><h3><span lang="en">Four targets</span><span lang="fa">چهار مقصد</span></h3><p><span lang="en">GitHub, ArvanCloud and Liara object storage, and Gitea, described in one <code>dokhaneh.yml</code>. Secrets only come from env vars.</span><span lang="fa">گیت‌هاب، فضای ذخیره‌سازی آروان‌کلاد و لیارا و گیتی در یک فایل <code>dokhaneh.yml</code>. کلیدها فقط از متغیرهای محیطی خوانده می‌شوند.</span></p></div>
+    <div class="fc" style="--c:var(--gold2)"><div class="ic">🔏</div><h3><span lang="en">One key verifies all</span><span lang="fa">یک کلید برای همه</span></h3><p><span lang="en">Every mirror gets the same bytes, so one public key checks them all. A compromised mirror can withhold files but can't modify them.</span><span lang="fa">همهٔ آینه‌ها همان بایت‌ها را دارند، پس یک کلید عمومی همه را بررسی می‌کند. آینهٔ آلوده می‌تواند فایل را نگه دارد، اما نمی‌تواند تغییرش دهد.</span></p></div>
+    <div class="fc" style="--c:#f2a08a"><div class="ic">🧯</div><h3><span lang="en">Fallback installer</span><span lang="fa">نصب‌کنندهٔ جایگزین</span></h3><p><span lang="en">POSIX sh, global then domestic, signature via <code>openssl pkeyutl</code>, version pinning against rollback, SHA-256 per file.</span><span lang="fa">POSIX sh، اول جهانی بعد داخلی، امضا با <code>openssl pkeyutl</code>، قفل نسخه در برابر بازگشت به نسخهٔ قدیمی و SHA-256 برای هر فایل.</span></p></div>
+    <div class="fc" style="--c:var(--tq2)"><div class="ic">📡</div><h3><span lang="en">status from anywhere</span><span lang="fa">وضعیت از هر جا</span></h3><p><span lang="en">Run it inside Iran, outside, or in CI: each target is UP, MISSING or DOWN with latency.</span><span lang="fa">داخل ایران، خارج یا در CI اجرا کنید: هر مقصد UP، MISSING یا DOWN با زمان پاسخ.</span></p></div>
+    <div class="fc" style="--c:var(--gold2)"><div class="ic">📚</div><h3><span lang="en">Docs, mirrored</span><span lang="fa">مستندات هم آینه می‌شوند</span></h3><p><span lang="en">Your MkDocs or Docusaurus build becomes a browsable site on the S3 mirrors and a signed docs archive everywhere.</span><span lang="fa">خروجی MkDocs یا Docusaurus شما روی آینه‌های S3 سایت قابل‌مرور و در همه‌جا آرشیو امضاشده می‌شود.</span></p></div>
+    <div class="fc" style="--c:#f2a08a"><div class="ic">🤖</div><h3><span lang="en">GitHub Action</span><span lang="fa">GitHub Action</span></h3><p><span lang="en">One step in your tag workflow with publish, sign, verify or status, and outputs for succeeded and failed targets.</span><span lang="fa">یک گام در گردش‌کار تگ با publish، sign، verify یا status و خروجی برای مقصدهای موفق و ناموفق.</span></p></div>
+  </div>
+</div></section>
+
+<section id="start" class="girih" style="background-color:var(--paper2);border-block:1.5px solid var(--line2)"><div class="wrap two">
+  <div>
+    <div class="eyebrow"><span lang="en">Quick start</span><span lang="fa">شروع سریع</span></div>
+    <h2><span lang="en">Five commands to two homes.</span><span lang="fa">پنج دستور تا دو خانه.</span></h2>
+<pre><span class="c"># install (Python 3.10+)</span>
+pip install git+https://github.com/mrzroot/dokhaneh
+
+<span class="c"># config + Ed25519 keypair</span>
+dokhaneh init      <span class="c"># commented dokhaneh.yml</span>
+dokhaneh keygen    <span class="c"># public → yml, private → secret</span>
+
+<span class="c"># publish, prove, check</span>
+dokhaneh publish --version 1.2.0 --dry-run
+dokhaneh publish --version 1.2.0
+dokhaneh verify  --version 1.2.0 --deep
+dokhaneh status  --version 1.2.0</pre>
+    <p class="fine"><span lang="en">End users install with one line from your domestic mirror:</span><span lang="fa">کاربران نهایی با یک خط از آینهٔ داخلی شما نصب می‌کنند:</span></p>
+<pre>curl -fsSL https://myapp-releases.s3.ir-thr-at1.arvanstorage.ir/install.sh | sh</pre>
+  </div>
+  <div>
+    <div class="eyebrow"><span lang="en">dokhaneh.yml</span><span lang="fa">dokhaneh.yml</span></div>
+    <h2><span lang="en">One file describes it all.</span><span lang="fa">یک فایل همه‌چیز را توصیف می‌کند.</span></h2>
+<pre class="tree"><span class="k">project</span>: { <span class="k">name</span>: myapp, <span class="k">tag</span>: <span class="s">"v{version}"</span> }
+<span class="k">artifacts</span>: [<span class="s">"dist/*.tar.gz"</span>]
+<span class="k">docs</span>: site/
+<span class="k">signing</span>:
+  <span class="k">private_key_env</span>: DOKHANEH_SIGNING_KEY
+  <span class="k">public_key</span>: <span class="s">"…output of dokhaneh keygen…"</span>
+<span class="k">targets</span>:
+  - { <span class="k">name</span>: github, <span class="k">type</span>: github, <span class="k">repo</span>: me/myapp }
+  - { <span class="k">name</span>: arvan,  <span class="k">type</span>: arvan,  <span class="k">bucket</span>: myapp-releases }
+  - { <span class="k">name</span>: liara,  <span class="k">type</span>: liara,  <span class="k">bucket</span>: myapp }
+  - { <span class="k">name</span>: gitea,  <span class="k">type</span>: gitea,
+      <span class="k">url</span>: https://git.example.ir, <span class="k">repo</span>: me/myapp, <span class="k">mirror</span>: true }
+<span class="c"># keys: *_ACCESS_KEY / *_SECRET_KEY / *_TOKEN env vars</span></pre>
+  </div>
+</div></section>
+
+<section><div class="wrap two">
+  <div>
+    <div class="eyebrow"><span lang="en">In CI</span><span lang="fa">در CI</span></div>
+    <h2><span lang="en">Add one step to your tag workflow.</span><span lang="fa">یک گام به گردش‌کار تگ اضافه کنید.</span></h2>
+<pre><span class="k">on</span>: { <span class="k">push</span>: { <span class="k">tags</span>: [<span class="s">"v*"</span>] } }
+<span class="k">permissions</span>: { <span class="k">contents</span>: write }
+<span class="k">jobs</span>:
+  <span class="k">release</span>:
+    <span class="k">runs-on</span>: ubuntu-latest
+    <span class="k">steps</span>:
+      - <span class="k">uses</span>: actions/checkout@v4
+      <span class="c"># … build dist/ and site/ …</span>
+      - <span class="k">uses</span>: mrzroot/dokhaneh@v0.1.0
+        <span class="k">with</span>:
+          <span class="k">signing-key</span>: <span class="s">${{ secrets.DOKHANEH_SIGNING_KEY }}</span>
+        <span class="k">env</span>:
+          <span class="k">GITHUB_TOKEN</span>: <span class="s">${{ secrets.GITHUB_TOKEN }}</span>
+          <span class="k">ARVAN_ACCESS_KEY</span>: <span class="s">${{ secrets.ARVAN_ACCESS_KEY }}</span>
+          <span class="k">ARVAN_SECRET_KEY</span>: <span class="s">${{ secrets.ARVAN_SECRET_KEY }}</span></pre>
+  </div>
+  <div>
+    <div class="eyebrow"><span lang="en">Security model</span><span lang="fa">مدل امنیتی</span></div>
+    <h2><span lang="en">Trust the key, not the mirror.</span><span lang="fa">به کلید اعتماد کنید، نه به آینه.</span></h2>
+    <ul class="sec">
+      <li><span lang="en">The private key is only read from an env var and never written to disk by publish.</span><span lang="fa">کلید خصوصی فقط از متغیر محیطی خوانده می‌شود و publish هرگز آن را روی دیسک نمی‌نویسد.</span></li>
+      <li><span lang="en">publish refuses to sign if the private key doesn't match signing.public_key.</span><span lang="fa">اگر کلید خصوصی با signing.public_key نخواند، publish امضا نمی‌کند.</span></li>
+      <li><span lang="en">The installer checks that the manifest is for the expected version, so an old signed release can't be replayed.</span><span lang="fa">نصب‌کننده بررسی می‌کند مانیفست برای همان نسخهٔ مورد انتظار باشد تا نسخهٔ امضاشدهٔ قدیمی دوباره جا زده نشود.</span></li>
+      <li><span lang="en">Gitea tokens stay in-process and are redacted from all error output.</span><span lang="fa">توکن گیتی فقط در حافظهٔ فرایند می‌ماند و از همهٔ پیام‌های خطا حذف می‌شود.</span></li>
+      <li><span lang="en">Publish your public key in more than one place: README, website and the script itself.</span><span lang="fa">کلید عمومی را در بیش از یک جا منتشر کنید: README، وب‌سایت و خود اسکریپت.</span></li>
+    </ul>
+  </div>
+</div></section>
+
+<section id="faq" style="background:var(--paper2);border-top:1.5px solid var(--line2)"><div class="wrap">
+  <div class="eyebrow"><span lang="en">FAQ</span><span lang="fa">پرسش‌های پرتکرار</span></div>
+  <h2><span lang="en">Questions</span><span lang="fa">پرسش‌ها</span></h2>
+  <details><summary><span lang="en">Is dokhaneh a filter-circumvention tool?</span><span lang="fa">آیا دوخانه ابزار دور زدن فیلترینگ است؟</span></summary><p><span lang="en">No. It doesn't tunnel, proxy or bypass anything. It publishes your own files to hosts you have accounts with, and lets users verify they are genuine.</span><span lang="fa">خیر. هیچ تونل، پراکسی یا دور زدنی ندارد. فقط فایل‌های خودتان را در میزبان‌هایی که در آن حساب دارید منتشر می‌کند و به کاربران امکان می‌دهد اصالتشان را بررسی کنند.</span></p></details>
+  <details><summary><span lang="en">Which hosts are supported?</span><span lang="fa">چه میزبان‌هایی پشتیبانی می‌شوند؟</span></summary><p><span lang="en">GitHub Releases, ArvanCloud and Liara object storage (any S3-compatible bucket works through the s3 type), and Gitea releases plus a git mirror of your branch and tags.</span><span lang="fa">GitHub Releases، فضای ذخیره‌سازی آروان‌کلاد و لیارا (هر سطل سازگار با S3 هم با نوع s3 کار می‌کند) و انتشار گیتی به‌همراه آینهٔ گیت از شاخه و تگ‌ها.</span></p></details>
+  <details><summary><span lang="en">What do end users need?</span><span lang="fa">کاربران نهایی به چه چیزی نیاز دارند؟</span></summary><p><span lang="en">A POSIX shell, curl or wget, and OpenSSL 3.0 or newer for Ed25519 verification. The public key is embedded in install.sh.</span><span lang="fa">یک شل POSIX، curl یا wget و OpenSSL نسخهٔ ۳٫۰ یا جدیدتر برای راستی‌آزمایی Ed25519. کلید عمومی داخل install.sh قرار دارد.</span></p></details>
+  <details><summary><span lang="en">Has it been tested against real Arvan, Liara and Gitea accounts?</span><span lang="fa">روی حساب واقعی آروان، لیارا و گیتی آزموده شده است؟</span></summary><p><span lang="en">Not yet. The 42 tests use mocked GitHub, S3 and Gitea APIs and run the real install.sh against local mirrors. Reports from real deployments are very welcome.</span><span lang="fa">هنوز نه. ۴۲ آزمون با APIهای شبیه‌سازی‌شدهٔ گیت‌هاب، S3 و گیتی اجرا می‌شوند و install.sh واقعی را روی آینه‌های محلی می‌آزمایند. گزارش استفادهٔ واقعی بسیار ارزشمند است.</span></p></details>
+  <details><summary><span lang="en">Is it on PyPI?</span><span lang="fa">در PyPI هست؟</span></summary><p><span lang="en">Not yet: install it from GitHub with pip, or use the composite GitHub Action.</span><span lang="fa">هنوز نه؛ با pip از گیت‌هاب نصب کنید یا از GitHub Action استفاده کنید.</span></p></details>
+  <div class="legal"><span lang="en"><b>Legal.</b> dokhaneh only distributes software you are allowed to distribute, to hosts you control, through their official APIs. It doesn't bypass any filtering or sanction mechanism.</span><span lang="fa"><b>نکتهٔ حقوقی.</b> دوخانه فقط نرم‌افزاری را که حق انتشارش را دارید، از راه APIهای رسمی، در میزبان‌هایی که در اختیار شماست توزیع می‌کند و هیچ سازوکار فیلترینگ یا تحریمی را دور نمی‌زند.</span></div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <span>MIT © 2026 <a href="https://mrzroot.github.io/">Mohammadreza Zare</a> · <span lang="en">Built in Mashhad</span><span lang="fa">ساخته‌شده در مشهد</span></span>
+  <span><a href="https://github.com/mrzroot/dokhaneh">GitHub</a> · <a href="https://github.com/mrzroot/dokhaneh/releases">Releases</a> · <a href="https://mrzroot.github.io/projects/"><span lang="en">More projects</span><span lang="fa">پروژه‌های دیگر</span></a></span>
+</div></footer>
+
+<script>
+(function(){
+  var R=document.documentElement,$=function(s){return document.querySelector(s)},$$=function(s){return Array.prototype.slice.call(document.querySelectorAll(s))};
+  var TITLES={en:'dokhaneh · Releases that survive a national-only internet',fa:'دوخانه · نسخه‌هایی که با اینترنت ملی هم در دسترس می‌مانند'};
+  function setLang(l,save){R.setAttribute('data-lang',l);R.lang=l;R.dir=l==='fa'?'rtl':'ltr';document.title=TITLES[l];
+    $$('[data-set-lang]').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-set-lang')===l))});
+    if(save)try{localStorage.setItem('mrz-lang',l)}catch(e){}}
+  setLang(R.getAttribute('data-lang')||'en');
+  $$('[data-set-lang]').forEach(function(b){b.addEventListener('click',function(){setLang(b.getAttribute('data-set-lang'),true)})});
+  $$('[data-copy]').forEach(function(b){b.addEventListener('click',function(){var t=document.getElementById(b.getAttribute('data-copy')).textContent;
+    if(navigator.clipboard)navigator.clipboard.writeText(t).then(function(){b.classList.add('ok');setTimeout(function(){b.classList.remove('ok')},1300)})})});
+
+  /* ---- animated diagram ---- */
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cut=false,term=$('#term'),pk=$('#pk'),NS='http://www.w3.org/2000/svg';
+  function line(h){var p=document.createElement('p');p.innerHTML=h;term.appendChild(p);while(term.children.length>9)term.removeChild(term.firstChild)}
+  function packet(i){if(reduce)return;var path=document.getElementById('l'+i);if(i===0&&cut)return;var c=document.createElementNS(NS,'circle');c.setAttribute('r','5');c.setAttribute('class','pk');pk.appendChild(c);
+    var L=path.getTotalLength(),t0=null;(function f(t){if(!t0)t0=t;var k=Math.min(1,(t-t0)/1100),pt=path.getPointAtLength(L*k);c.setAttribute('cx',pt.x);c.setAttribute('cy',pt.y);if(k<1)requestAnimationFrame(f);else pk.removeChild(c)})(performance.now())}
+  function setCut(v){cut=v;$('#cut').setAttribute('aria-pressed',String(v));var l0=$('#l0'),n0=$('#n0'),s0=$('#s0');
+    l0.setAttribute('class','lnk '+(v?'cut':'on'));n0.setAttribute('class','node g'+(v?' down':''));s0.textContent=v?'✖ DOWN':'● UP';s0.setAttribute('class','st '+(v?'bad':'ok'));run()}
+  $('#cut').addEventListener('click',function(){setCut(!cut)});
+  var timer=null;
+  function run(){clearTimeout(timer);term.innerHTML='';var S=cut?[
+    '<span class="d">$</span> curl -fsSL https://myapp-releases.s3…/install.sh | sh',
+    '<span class="y">→</span> github  manifest.json  <span class="r">✖ timeout after 10s</span>',
+    '<span class="y">→</span> arvan   manifest.json  <span class="g">200 · 41ms</span>',
+    '  signature Ed25519 (openssl pkeyutl)  <span class="g">✓ valid</span>',
+    '  version 1.2.0 matches                <span class="g">✓</span>',
+    '  myapp-1.2.0-linux-amd64.tar.gz       <span class="g">✓ sha256 ok</span>',
+    '<span class="g">✓ installed myapp 1.2.0 from arvan</span>']:[
+    '<span class="d">$</span> dokhaneh publish --version 1.2.0',
+    '  manifest.json · 4 files · <span class="y">signed Ed25519</span>',
+    '  github  release v1.2.0         <span class="g">✓ uploaded</span>',
+    '  arvan   releases/1.2.0/        <span class="g">✓ uploaded</span>',
+    '  liara   releases/1.2.0/        <span class="g">✓ uploaded</span>',
+    '  gitea   release + mirror push  <span class="g">✓ uploaded</span>',
+    '<span class="g">✓ 4/4 targets · try the national-only switch ↑</span>'];
+    var i=0;(function n(){if(i>=S.length){timer=setTimeout(run,5200);return}line(S[i]);
+      if(!cut&&i>=2&&i<=5)packet(i-2);if(cut&&i===2)[1,2,3].forEach(packet);i++;timer=setTimeout(n,reduce?50:620)})()}
+  run();
+})();
+</script>
+</body>
+</html>
