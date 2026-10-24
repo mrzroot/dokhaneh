@@ -1,0 +1,20 @@
+/* dokhaneh identity: "two homes at dusk". Night navy + saffron (dark) / sand + indigo ink (light). Young Serif. Dome silhouettes exchange saffron parcels across the sky. */
+@font-face{font-family:'Young Serif';src:url(fonts/young-serif-400.woff2) format('woff2');font-weight:400;font-display:swap}
+html[data-theme=dark]:root{--paper:#07123a;--paper2:#0a1a4e;--card:#0d2060;--ink:#f7efd8;--ink2:#c9cfee;--mut:#9fa9d8;--line:#1b3180;--line2:#2d46a0;--gold:#ffb300;--gold2:#ffd15a;--tq:#ffcb47;--tq2:#ffe08a;--terra:#ff8a5c;--top-bg:rgba(7,18,58,.86)}
+html[data-theme=light]:root{--paper:#f6e8c6;--paper2:#efdcae;--card:#fff6df;--ink:#16205a;--ink2:#38427a;--mut:#5b6290;--line:#e1cc98;--line2:#cfb676;--gold:#e09a00;--gold2:#ffc933;--tq:#9a5b00;--tq2:#e09a00;--terra:#b0442a;--top-bg:rgba(246,232,198,.88)}
+h1,h2,.brand{font-family:'Young Serif',Vazirmatn,Georgia,serif!important;font-weight:400!important;letter-spacing:-.01em}
+h1{font-size:clamp(40px,5.6vw,80px)!important;line-height:1.02!important}
+h1 em{font-style:normal!important;color:var(--gold2)!important;text-shadow:0 0 28px rgba(255,179,0,.4)}
+html[data-theme=light] h1 em{color:#b36a00!important;text-shadow:none}
+html[data-lang=fa] h1,html[data-lang=fa] h2,html[lang=fa] h1,html[lang=fa] h2{font-family:Vazirmatn,sans-serif!important;font-weight:800!important;letter-spacing:0;line-height:1.3!important}
+html[data-lang=fa] h1,html[lang=fa] h1{font-size:clamp(32px,4.4vw,60px)!important}
+.hero{isolation:isolate}
+.hero .girih{opacity:.35!important;z-index:0}
+.hero .wrap{position:relative;z-index:2}
+.homes{position:absolute;inset:0;width:100%;height:100%;z-index:1;cursor:pointer;touch-action:pan-y}
+.hero .wrap{pointer-events:none}.hero .wrap a,.hero .wrap button,.hero .wrap .map,.hero .wrap .inst,.hero .wrap code{pointer-events:auto}
+.btn{border-radius:999px!important}
+.btn.p{background:var(--gold)!important;color:#1b1400!important;border-color:var(--gold)!important}
+.btn:hover{transform:translateY(-3px);box-shadow:0 12px 28px -10px var(--gold)}
+.map{box-shadow:10px 10px 0 var(--gold)!important;border-color:var(--gold)!important}
+@media(max-width:520px){.brand .fa-name{display:none}}
