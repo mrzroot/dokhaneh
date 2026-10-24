@@ -21,3 +21,6 @@ html[data-lang=fa] h1,html[lang=fa] h1{font-size:clamp(32px,4.4vw,60px)!importan
 
 /* a11y: AA contrast for small text in light theme */
 html[data-theme=light] .mhead span{color:#575e8a}html[data-theme=light] .eyebrow,html[data-theme=light] .eyebrow span{color:#a43f27}
+
+/* QA: keep the "A" (automatic) badge anchored to the theme button */
+html .mrz-tt{position:relative}
