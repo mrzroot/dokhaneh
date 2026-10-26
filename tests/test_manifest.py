@@ -1,3 +1,4 @@
+"""Signing: key pair round-trip, sign/verify of the manifest, rejected keys, and the one-line manifest entry format."""
 import base64
 import subprocess
 

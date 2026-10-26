@@ -1,3 +1,4 @@
+"""Fixtures: a throw-away git project, a signing key pair and a ready Config for the publish/CLI tests."""
 from __future__ import annotations
 
 import io

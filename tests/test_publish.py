@@ -1,3 +1,4 @@
+"""Publishing a bundle to S3-compatible, GitHub and Gitea targets with mocked HTTP: bundle contents, source order, key checks, dry run, partial failures and token redaction."""
 import subprocess
 
 import boto3

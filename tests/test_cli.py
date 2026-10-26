@@ -1,3 +1,4 @@
+"""dokhaneh CLI: init/keygen, sign and verify, publish --dry-run, install-script output, verify against a local mirror server and status exit codes."""
 import json
 
 import httpx

@@ -1,3 +1,4 @@
+"""Config loading: defaults, environment-variable expansion, version taken from the git tag, required fields."""
 import pytest
 
 from dokhaneh.config import ConfigError, load_config, parse_config
