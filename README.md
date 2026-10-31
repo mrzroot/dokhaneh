@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="docs/banner.svg" alt="dokhaneh (دوخانه): one release, two homes" width="100%">
+
 # Dokhaneh · دوخانه
 
 **One release, two homes.** Publish every release to GitHub *and* to domestic hosts at the same time,
