@@ -68,7 +68,7 @@ h1 .two:after{content:"";position:absolute;inset:auto 0 .06em;height:.16em;backg
 /* map */
 .map{background:var(--card);border:1.5px solid var(--ink);border-radius:22px;box-shadow:10px 10px 0 var(--ink);overflow:hidden;direction:ltr}
 .mhead{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1.5px solid var(--ink);font:600 13px var(--mono);background:var(--paper2)}
-.mhead b{color:var(--ink)}.mhead span{margin-left:auto;color:var(--mut);font-weight:500}
+.mhead b{color:var(--ink)}.mhead>span{margin-left:auto;color:var(--mut);font-weight:500}
 .toggle{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font:700 12px var(--sans);color:var(--ink);padding:5px 10px 5px 6px;border:1.5px solid var(--ink);border-radius:999px;background:var(--card)}
 .toggle i{width:28px;height:16px;border-radius:99px;background:#cfc3ad;position:relative;transition:.2s}
 .toggle i:after{content:"";position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:#fff;transition:.2s}
@@ -130,7 +130,7 @@ details p{margin:10px 0 0;color:var(--ink2)}
 footer{border-top:1.5px solid var(--line2);padding:34px 0 52px;color:var(--mut);font-size:14.5px}
 footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between}footer a{color:var(--ink2)}
 @media (max-width:980px){.hgrid,.two,.story{grid-template-columns:1fr}.feat{grid-template-columns:1fr 1fr}.steps{grid-template-columns:1fr 1fr;row-gap:34px}}
-@media (max-width:640px){.top nav a.h{display:none}.feat,.steps{grid-template-columns:1fr}.hero{padding:44px 0 60px}section{padding:70px 0}.map{box-shadow:6px 6px 0 var(--ink)}.mhead span{display:none}h1 .two{white-space:normal}.mterm{font-size:10.5px;overflow-x:auto}.mterm p{white-space:pre;word-break:normal}}
+@media (max-width:640px){.top nav a.h{display:none}.feat,.steps{grid-template-columns:1fr}.hero{padding:44px 0 60px}section{padding:70px 0}.map{box-shadow:6px 6px 0 var(--ink)}.mhead>span{display:none}h1 .two{white-space:normal}.mterm{font-size:10.5px;overflow-x:auto}.mterm p{white-space:pre;word-break:normal}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 <style id="mrz-theme-css">/*mrz-theme-badge*/[data-theme-toggle]{position:relative}
