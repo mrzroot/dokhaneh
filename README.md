@@ -13,7 +13,7 @@ with an Ed25519-signed manifest that proves every mirror carries exactly the sam
 [![Release](https://img.shields.io/github/v/release/mrzroot/dokhaneh?sort=semver)](https://github.com/mrzroot/dokhaneh/releases)
 [![Stars](https://img.shields.io/github/stars/mrzroot/dokhaneh?style=flat&logo=github)](https://github.com/mrzroot/dokhaneh/stargazers)
 
-[**Website**](https://mrzroot.github.io/dokhaneh/) · [English](#english) · [فارسی](#فارسی) · [Contributing](CONTRIBUTING.md)
+[**Website**](https://mrzroot.github.io/dokhaneh/) · [English](#english) · [فارسی](#فارسی) · [Changelog](CHANGELOG.md) · [Contributing](CONTRIBUTING.md)
 
 <a href="https://mrzroot.github.io/dokhaneh/"><img src="docs/screenshot.png" alt="dokhaneh: one release published to GitHub, ArvanCloud, Liara and Gitea with a signed manifest" width="860"></a>
 
