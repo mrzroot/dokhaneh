@@ -180,7 +180,9 @@ html[data-theme] .legal{background:var(--band-bg);color:var(--band-fg);border:1.
 html[data-theme] h1 .two:after{background:var(--gold2);opacity:.55}
 html[data-theme=dark] .girih{filter:saturate(1.2)}
 </style>
-<link rel="preload" href="fonts/young-serif-400.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="identity.css"></head>
+<link rel="preload" href="fonts/young-serif-400.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="identity.css"><link rel="stylesheet" href="mx.css">
+<style id="mx-tokens">:root{--mx-acc:var(--gold);--mx-acc-t:var(--tq);--mx-on-acc:#16205a;--mx-fg:var(--ink);--mx-mut:var(--mut);--mx-card:var(--card);--mx-line:var(--line)}.mx-sec>h2{font-family:'Young Serif',serif;font-weight:400}</style>
+</head>
 <body>
 <header class="top"><div class="wrap">
   <a class="brand" href="#"><img src="favicon.svg" alt=""><span lang="en">dokhaneh</span><span lang="fa">دوخانه</span></a>
@@ -208,7 +210,7 @@ html[data-theme=dark] .girih{filter:saturate(1.2)}
     <p class="fine"><span lang="en">Not a circumvention tool: it only uses legitimate hosts you control.</span><span lang="fa">ابزار دور زدن فیلترینگ نیست: فقط از میزبان‌های قانونی خودتان استفاده می‌کند.</span></p>
   </div>
 
-  <div class="map" aria-label="Animated diagram: one release published to GitHub and three domestic mirrors">
+  <div class="map" aria-label="Animated diagram (simulation): one release published to GitHub and three domestic mirrors">
     <div class="mhead"><b>dokhaneh status</b><button class="toggle" id="cut" type="button" aria-pressed="false"><i></i><span lang="en">national-only internet</span><span lang="fa">اینترنت ملی</span></button><span>v1.2.0</span></div>
     <svg class="net" viewBox="0 0 560 300" role="img" aria-label="network">
       <path id="l0" class="lnk on" d="M110 150 C 200 150, 220 60, 330 60"/>
@@ -223,9 +225,13 @@ html[data-theme=dark] .girih{filter:saturate(1.2)}
       <g id="pk"></g>
     </svg>
     <div class="mterm" id="term"></div>
+    <p class="mx-sim" style="margin:12px 14px 14px"><span lang="en">Simulation: flip “national-only internet” to see how users fall back to the mirrors. Version and hosts are examples.</span><span lang="fa" dir="rtl">شبیه‌سازی: «اینترنت ملی» را روشن کنید تا ببینید کاربران چطور به آینه‌ها می‌روند. نسخه و میزبان‌ها نمونه‌اند.</span></p>
   </div>
 </div></div>
 
+
+<!-- mx: one-sentence "what is it" -->
+<section class="mx mx-sec mx-one" aria-label="What it is"><span class="mx-kick"><span lang="en">In one sentence</span><span lang="fa">در یک جمله</span></span><p lang="en">dokhaneh keeps <mark>every release in two homes</mark>, GitHub and servers inside the country, and signs them, so people can still download your software when the global internet is cut, and check that every copy is identical.</p><p lang="fa" dir="rtl">دوخانه <mark>هر نسخه از نرم‌افزارتان را در دو خانه نگه می‌دارد</mark>، گیت‌هاب و سرورهای داخل کشور، و امضایش می‌کند؛ تا وقتی اینترنت بین‌الملل قطع است هم کاربران بتوانند دانلود کنند و مطمئن شوند همهٔ نسخه‌ها یکی‌اند.</p></section>
 <section class="band"><div class="wrap">
   <div class="eyebrow"><span lang="en">Why two homes</span><span lang="fa">چرا دو خانه</span></div>
   <h2><span lang="en">Your users shouldn't lose your software overnight.</span><span lang="fa">کاربرانتان نباید یک‌شبه نرم‌افزارتان را از دست بدهند.</span></h2>
@@ -240,7 +246,7 @@ html[data-theme=dark] .girih{filter:saturate(1.2)}
   <div class="eyebrow"><span lang="en">How it works</span><span lang="fa">روش کار</span></div>
   <h2><span lang="en">Sign once. Mirror everywhere. Verify anywhere.</span><span lang="fa">یک بار امضا، همه‌جا آینه، هر جا راستی‌آزمایی.</span></h2>
   <p class="sub"><span lang="en">One command in your tag workflow does all four steps. One mirror failing never blocks the others.</span><span lang="fa">یک دستور در گردش‌کار تگ هر چهار گام را انجام می‌دهد. خرابی یک آینه بقیه را متوقف نمی‌کند.</span></p>
-  <div class="steps">
+  <div class="mx-steps steps">
     <div class="step"><h3><span lang="en">Manifest</span><span lang="fa">مانیفست</span></h3><p><span lang="en">Hashes every artifact, the docs archive and install.sh into <code>manifest.json</code> (SHA-256 + size).</span><span lang="fa">هش همهٔ فایل‌ها، آرشیو مستندات و install.sh را در <code>manifest.json</code> (SHA-256 و اندازه) می‌نویسد.</span></p></div>
     <div class="step"><h3><span lang="en">Sign</span><span lang="fa">امضا</span></h3><p><span lang="en">Signs it with your Ed25519 key from <code>DOKHANEH_SIGNING_KEY</code>; refuses if the key doesn't match the public one.</span><span lang="fa">با کلید Ed25519 از <code>DOKHANEH_SIGNING_KEY</code> امضا می‌کند و اگر کلید با کلید عمومی نخواند، امضا نمی‌کند.</span></p></div>
     <div class="step"><h3><span lang="en">Publish</span><span lang="fa">انتشار</span></h3><p><span lang="en">Uploads byte-identical copies to GitHub Releases, ArvanCloud and Liara S3, and a Gitea release plus a git mirror.</span><span lang="fa">نسخه‌های کاملاً یکسان را در GitHub Releases، فضای S3 آروان‌کلاد و لیارا و انتشار و آینهٔ گیتی بارگذاری می‌کند.</span></p></div>
@@ -340,6 +346,9 @@ dokhaneh status  --version 1.2.0</pre>
   <details><summary><span lang="en">Is it on PyPI?</span><span lang="fa">در PyPI هست؟</span></summary><p><span lang="en">Not yet: install it from GitHub with pip, or use the composite GitHub Action.</span><span lang="fa">هنوز نه؛ با pip از گیت‌هاب نصب کنید یا از GitHub Action استفاده کنید.</span></p></details>
   <div class="legal"><span lang="en"><b>Legal.</b> dokhaneh only distributes software you are allowed to distribute, to hosts you control, through their official APIs. It doesn't bypass any filtering or sanction mechanism.</span><span lang="fa"><b>نکتهٔ حقوقی.</b> دوخانه فقط نرم‌افزاری را که حق انتشارش را دارید، از راه APIهای رسمی، در میزبان‌هایی که در اختیار شماست توزیع می‌کند و هیچ سازوکار فیلترینگ یا تحریمی را دور نمی‌زند.</span></div>
 </div></section>
+
+<!-- mx: latest release (real tag; refreshed from the GitHub API when online) -->
+<section class="mx mx-sec" id="release" aria-labelledby="mx-rel-h"><span class="mx-kick"><span class="mx-live" aria-hidden="true"></span><span lang="en">Latest release</span><span lang="fa">آخرین نسخه</span></span><h2 id="mx-rel-h"><span lang="en">Ready to install</span><span lang="fa">آمادهٔ نصب</span></h2><div class="mx-rel" data-repo="dokhaneh" data-mx><div class="mx-ver" data-mx-ver>v0.1.0</div><div class="mx-meta"><span lang="en">Published <b data-mx-date data-iso="2026-10-09T12:22:00Z" lang="en">2026-10-09</b>. Includes tagged source (install from the tag).</span><span lang="fa">منتشرشده در <b data-mx-date data-iso="2026-10-09T12:22:00Z" lang="fa">2026-10-09</b>. شامل سورس برچسب‌خورده (نصب از روی تگ).</span></div><div class="mx-btns"><a class="mx-btn p" data-mx-link href="https://github.com/mrzroot/dokhaneh/releases/tag/v0.1.0"><span lang="en">Release notes</span><span lang="fa">یادداشت انتشار</span></a><a class="mx-btn" href="https://github.com/mrzroot/dokhaneh/blob/main/CHANGELOG.md"><span lang="en">Changelog</span><span lang="fa">تغییرات</span></a><a class="mx-btn" href="https://github.com/mrzroot/dokhaneh/releases"><span lang="en">All releases</span><span lang="fa">همهٔ نسخه‌ها</span></a></div></div></section>
 </main>
 
 <footer><div class="wrap">
@@ -420,5 +429,6 @@ window.addEventListener('pageshow',function(e){if(e.persisted)apply(get(),false)
 if(window.MutationObserver)new MutationObserver(sync).observe(d,{attributes:true,attributeFilter:['data-lang','lang']});
 /* normalise whatever the boot script set */apply(get(),false)})();</script>
 <script src="fx.js" defer></script><script>/* keyboard access for horizontally scrollable code blocks */(function(){function f(){document.querySelectorAll('pre,.code,[id^=c-],#cmd,#c1,#t1').forEach(function(e){if(e.scrollWidth>e.clientWidth+1&&!e.hasAttribute('tabindex'))e.setAttribute('tabindex','0')})}addEventListener('load',f);addEventListener('resize',f);setTimeout(f,1500)})()</script>
+<script src="mx.js" defer></script>
 </body>
 </html>
