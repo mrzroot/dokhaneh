@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-lang="en" dir="ltr">
+<html data-portfolio-design="dokhaneh" lang="en" data-lang="en" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="theme-color" content="#07123a" media="(prefers-color-scheme: dark)">
@@ -180,8 +180,9 @@ html[data-theme] .legal{background:var(--band-bg);color:var(--band-fg);border:1.
 html[data-theme] h1 .two:after{background:var(--gold2);opacity:.55}
 html[data-theme=dark] .girih{filter:saturate(1.2)}
 </style>
-<link rel="preload" href="fonts/young-serif-400.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="identity.css"><link rel="stylesheet" href="mx.css">
+<link rel="stylesheet" href="identity.css"><link rel="stylesheet" href="mx.css">
 <style id="mx-tokens">:root{--mx-acc:var(--gold);--mx-acc-t:var(--tq);--mx-on-acc:#16205a;--mx-fg:var(--ink);--mx-mut:var(--mut);--mx-card:var(--card);--mx-line:var(--line)}.mx-sec>h2{font-family:'Young Serif',serif;font-weight:400}</style>
+<link rel="stylesheet" href="portfolio-reframe.css">
 </head>
 <body>
 <header class="top"><div class="wrap">
@@ -196,6 +197,20 @@ html[data-theme=dark] .girih{filter:saturate(1.2)}
 </div></header>
 
 <main>
+
+<!-- Portfolio design: localized overview; original project sections remain below. -->
+<aside class="rr-signal">
+  <div class="rr-annotation"><p class="rr-product"><bdi>dokhaneh</bdi><span><span class="rr-en" lang="en">Release distribution</span><span class="rr-fa" lang="fa">توزیع نسخه</span></span></p>
+    <p class="rr-promise"><span class="rr-en" lang="en">One signed release, two delivery routes</span><span class="rr-fa" lang="fa">یک نسخهٔ امضاشده، دو مسیر دریافت</span></p>
+    <a class="rr-start" href="#how"><span class="rr-en" lang="en">Release workflow</span><span class="rr-fa" lang="fa">فرایند انتشار</span> <span aria-hidden="true">↓</span></a>
+  </div>
+  <div class="rr-visual" aria-hidden="true">
+    <svg viewBox="0 0 360 100" width="360" height="100" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M124 50h34M158 50c34 0 22-26 53-26h20m-73 26c34 0 22 26 53 26h20" stroke-dasharray="4 5"/><rect x="54" y="30" width="70" height="40" rx="11"/><path d="m76 51 8 7 17-18"/><rect x="231" y="7" width="70" height="34" rx="9"/><rect x="231" y="59" width="70" height="34" rx="9"/><path d="M250 24h33M250 76h33"/><circle cx="161" cy="50" r="4" fill="currentColor"/>
+    </svg>
+    <div class="rr-steps"><span><span class="rr-en" lang="en">Sign</span><span class="rr-fa" lang="fa">امضا</span></span><span><span class="rr-en" lang="en">Mirror</span><span class="rr-fa" lang="fa">آینه</span></span><span><span class="rr-en" lang="en">Verify</span><span class="rr-fa" lang="fa">راستی‌آزمایی</span></span></div>
+  </div>
+</aside>
 <div class="hero"><div class="girih"></div><div class="wrap hgrid">
   <div>
     <div class="kick"><span lang="en">v0.1.0 · open source · MIT</span><span lang="fa">نسخهٔ ۰٫۱٫۰ · متن‌باز · MIT</span></div>
@@ -432,3 +447,4 @@ if(window.MutationObserver)new MutationObserver(sync).observe(d,{attributes:true
 <script src="mx.js" defer></script>
 </body>
 </html>
+
