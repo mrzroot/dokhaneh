@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Rehearse a signed multi-mirror release before publishing.">
+<title>dokhaneh · Project guide / راهنمای پروژه</title>
+<style>
+:root{--ink:#202638;--brand:#133e3a;--pastel:#adf1d5;font:1rem/1.6 system-ui,sans-serif;color:var(--ink);background:#f7f9fc}
+*{box-sizing:border-box}body{margin:0}a{color:inherit}a:focus-visible,pre:focus-visible{outline:3px solid #3569e2;outline-offset:4px}
+header{background:var(--brand);color:#fff;padding:2.5rem max(1.25rem,calc((100vw - 65rem)/2));border-bottom:.45rem solid var(--pastel)}
+header h1{font-size:clamp(2rem,8vw,4rem);margin:0;overflow-wrap:anywhere;line-height:1.15}header p{color:var(--pastel);margin:.45rem 0 1rem;font-size:1.1rem}
+nav{display:flex;flex-wrap:wrap;gap:.6rem 1rem}nav a{padding:.2rem .65rem;border:1px solid currentColor;border-radius:999px;text-decoration:none}
+nav a:hover{background:var(--pastel);color:var(--brand)}
+main{width:min(65rem,100% - 2.5rem);margin:2.5rem auto}section+section{margin-top:3rem}.intro span{font-size:.8rem;font-weight:700;color:var(--brand)}
+h2{font-size:clamp(1.4rem,4vw,2rem);line-height:1.3;margin:.25rem 0 1rem}.steps{padding:0;margin:0;display:grid;gap:.85rem;list-style:none;counter-reset:steps}
+.steps li{background:#fff;border:1px solid #d9e0ec;border-inline-start:5px solid var(--brand);border-radius:.75rem;padding:1rem 1.15rem;counter-increment:steps;min-width:0}
+h3{margin:0;line-height:1.3;font-size:1.1rem}h3::before{content:counter(steps);display:inline-grid;place-items:center;margin-inline-end:.5rem;background:var(--pastel);color:var(--brand);border-radius:50%;width:1.8rem;height:1.8rem}
+p{margin:.55rem 0}pre{overflow:auto;white-space:pre;font-size:.87rem;border-radius:.4rem;background:#202638;color:#fff;padding:.75rem;margin:.75rem 0 0}
+footer{padding:1.25rem;text-align:center;color:var(--brand);border-top:1px solid #d9e0ec}
+@media(min-width:52rem){.steps{grid-template-columns:repeat(3,minmax(0,1fr))}}
+</style>
+</head>
+<body><header><h1>dokhaneh</h1><p lang="fa" dir="rtl" style="text-align:left">دوخانه · راهنمای پروژه</p>
+<nav aria-label="Page links"><a href="#en">English</a><a href="#fa" lang="fa">فارسی</a><a href="https://github.com/mrzroot/dokhaneh">Source on GitHub</a><a href="https://github.com/mrzroot/dokhaneh/releases">Releases</a><a href="./index.html">Project home</a></nav>
+</header><main><section id="en" lang="en" dir="ltr" aria-labelledby="title-en">
+<div class="intro"><span>PROJECT WALKTHROUGH</span><h2 id="title-en">Rehearse a signed multi-mirror release before publishing.</h2></div>
+<ol class="steps"><li><h3>Plan without uploading</h3><p>Configure artifact paths and the public key. Load the private key from the designated secret environment variable, not from the repository.</p><pre dir="ltr" tabindex="0"><code>dokhaneh publish --version 1.2.0 --dry-run</code></pre></li>
+<li><h3>Check the signed result</h3><p>Once you have deliberately published a test release, deep verification compares signed manifests and re-hashes each file on the mirrors.</p><pre dir="ltr" tabindex="0"><code>dokhaneh verify --version 1.2.0 --deep</code></pre></li>
+<li><h3>Separate access from integrity</h3><p>Run status from the networks that matter. A reachable mirror is not the same as a verified one.</p><pre dir="ltr" tabindex="0"><code>dokhaneh status --version 1.2.0</code></pre></li></ol>
+</section>
+<section id="fa" lang="fa" dir="rtl" aria-labelledby="title-fa">
+<div class="intro"><span>راهنمای عملی پروژه</span><h2 id="title-fa">انتشار امضاشده روی چند آینه را پیش از بارگذاری تمرین کنید.</h2></div>
+<ol class="steps"><li><h3>پیکربندی و برنامهٔ انتشار</h3><p>مسیر فایل‌ها و کلید عمومی را تنظیم کنید؛ کلید خصوصی باید در متغیر محرمانهٔ محیط بماند.</p><pre dir="ltr" tabindex="0"><code>dokhaneh publish --version 1.2.0 --dry-run</code></pre></li>
+<li><h3>راستی‌آزمایی نسخهٔ آزمایشی</h3><p>پس از انتشار عمدی نسخهٔ آزمایشی، امضای مانیفست و هش فایل‌های آینه‌ها را بررسی کنید.</p><pre dir="ltr" tabindex="0"><code>dokhaneh verify --version 1.2.0 --deep</code></pre></li>
+<li><h3>تفکیک دسترسی از صحت فایل</h3><p>وضعیت را از شبکهٔ کاربران بررسی کنید؛ در دسترس‌بودن آینه نشانهٔ معتبر بودن فایل نیست.</p><pre dir="ltr" tabindex="0"><code>dokhaneh status --version 1.2.0</code></pre></li></ol>
+</section></main>
+<footer>Review guide · not a release / <span lang="fa" dir="rtl">راهنمای بازبینی؛ نه نسخهٔ منتشرشده</span></footer></body></html>

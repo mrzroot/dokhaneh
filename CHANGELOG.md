@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Added a bilingual project walkthrough with a practical, reproducible first-use workflow. Documentation only; no runtime changes.
+
 Documentation, website and test-readability changes only; the package and the GitHub Action are unchanged since 0.1.0.
 
 ### Added

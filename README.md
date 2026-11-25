@@ -17,6 +17,10 @@ with an Ed25519-signed manifest that proves every mirror carries exactly the sam
 
 <a href="https://mrzroot.github.io/dokhaneh/"><img src="docs/screenshot.png" alt="dokhaneh: one release published to GitHub, ArvanCloud, Liara and Gitea with a signed manifest" width="860"></a>
 
+
+
+[Project walkthrough · راهنمای عملی پروژه](docs/project-guide.html)
+
 </div>
 
 ### ⚡ Quickstart
