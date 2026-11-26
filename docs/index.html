@@ -183,7 +183,7 @@ html[data-theme=dark] .girih{filter:saturate(1.2)}
 <link rel="stylesheet" href="identity.css"><link rel="stylesheet" href="mx.css">
 <style id="mx-tokens">:root{--mx-acc:var(--gold);--mx-acc-t:var(--tq);--mx-on-acc:#16205a;--mx-fg:var(--ink);--mx-mut:var(--mut);--mx-card:var(--card);--mx-line:var(--line)}.mx-sec>h2{font-family:'Young Serif',serif;font-weight:400}</style>
 <link rel="stylesheet" href="portfolio-reframe.css">
-<link rel="stylesheet" href="/assets/studio-mark.css"></head>
+<link rel="stylesheet" href="/assets/studio-mark.css"><link rel="stylesheet" href="/assets/portfolio/embed.css"><script defer src="/assets/portfolio/exhibit.js"></script></head>
 <body>
 <header class="top"><div class="wrap">
   <a class="brand" href="#"><img src="favicon.svg" alt=""><span lang="en">dokhaneh</span><span lang="fa">دوخانه</span></a>
@@ -247,11 +247,32 @@ html[data-theme=dark] .girih{filter:saturate(1.2)}
 
 <!-- mx: one-sentence "what is it" -->
 <section class="mx mx-sec mx-one" aria-label="What it is"><span class="mx-kick"><span lang="en">In one sentence</span><span lang="fa">در یک جمله</span></span><p lang="en">dokhaneh keeps <mark>every release in two homes</mark>, GitHub and servers inside the country, and signs them, so people can still download your software when the global internet is cut, and check that every copy is identical.</p><p lang="fa" dir="rtl">دوخانه <mark>هر نسخه از نرم‌افزارتان را در دو خانه نگه می‌دارد</mark>، گیت‌هاب و سرورهای داخل کشور، و امضایش می‌کند؛ تا وقتی اینترنت بین‌الملل قطع است هم کاربران بتوانند دانلود کنند و مطمئن شوند همهٔ نسخه‌ها یکی‌اند.</p></section>
-<aside class="studio-project-entry" style="--entry-color:#f9c685">
-  <img src="/assets/thumbs/dokhaneh.webp" alt="" width="160" height="100" loading="lazy" decoding="async">
-  <div><strong>Verify a release at the mirror</strong><small>Compare the file digest</small></div>
-  <a href="/playground/?project=dokhaneh&amp;lang=en">Try the case ↗</a>
-</aside>
+<div class="atlas-embedded" data-motif="route" style="--exhibit-hue:45"><section class="exhibit-studio" id="portfolio-example" data-project="dokhaneh" data-motif="route" data-state="0" aria-labelledby="portfolio-example-title">
+    <div class="exhibit-studio-head"><div><p class="exhibit-kicker"><span class="pf-en" lang="en">Illustrative sample</span><span class="pf-fa" lang="fa">دادهٔ نمونه</span></p><h2 id="portfolio-example-title"><span class="pf-en" lang="en">Send the sample through a route</span><span class="pf-fa" lang="fa">نمونه را از یک مسیر عبور بده</span></h2></div>
+       <a href="/projects/guide/dokhaneh/"><span class="pf-en" lang="en">Interactive introduction</span><span class="pf-fa" lang="fa">معرفی تعاملی</span> <i class="exhibit-arrow" aria-hidden="true"></i></a></div>
+    <div class="exhibit-lab">
+      <div class="stage-picture" aria-hidden="true">
+        <div class="stage-sign"><i></i><i></i><i></i><strong dir="ltr">dokhaneh</strong></div>
+
+        <div class="stage-track" dir="ltr"></div>
+        <div class="stage-evidence" dir="ltr"><span dir="auto">Release manifest</span><span dir="auto">Mirror file</span><span dir="auto">Need check</span></div>
+      </div>
+      <div class="stage-work">
+        <p><span class="pf-en" lang="en">A sample mirror offers a release file during an outage. You have the expected digest from the release manifest.</span><span class="pf-fa" lang="fa">در زمان قطعی، آینه یک فایل انتشار دارد. هش مورد انتظار را از مانیفست انتشار داری.</span></p>
+        <div class="stage-actions" role="group" aria-label="Example controls / کنترل‌های نمونه">
+          <button type="button" data-stage="1" aria-pressed="false"><span class="pf-en" lang="en">Compare the file digest</span><span class="pf-fa" lang="fa">هش فایل را مقایسه کن</span><i class="exhibit-arrow" aria-hidden="true"></i></button><button type="button" data-stage="2" aria-pressed="false"><span class="pf-en" lang="en">Compare only the filename</span><span class="pf-fa" lang="fa">فقط نام فایل را مقایسه کن</span><i class="exhibit-arrow" aria-hidden="true"></i></button>
+        </div>
+        <output class="stage-result" aria-live="polite"><span class="pf-en" lang="en">Try a response to see its effect.</span><span class="pf-fa" lang="fa">یک کار را انتخاب کن و اثرش را ببین.</span></output>
+        <div class="stage-foot">
+          <button type="button" data-stage="0" aria-pressed="true"><span class="pf-en" lang="en">Reset example</span><span class="pf-fa" lang="fa">بازنشانی نمونه</span></button>
+
+        </div>
+      </div>
+    </div>
+   </section>
+    <p class="exhibit-takeaway"><span class="pf-en" lang="en">Preserve the original release manifest. Compare the expected checksum with the downloaded bytes at each mirror.</span><span class="pf-fa" lang="fa">مانیفست انتشار اصلی را نگه دار و هش مورد انتظار را با فایل دانلودشده از هر آینه مقایسه کن.</span></p>
+    <script type="application/json" data-embed-project>{"entries":[{"id":"dokhaneh","group":"systems","motif":"route","color":"#f9c685","title":["Verify a release at the mirror","انتشار را در آینه بررسی کن"],"brief":["A sample mirror offers a release file during an outage. You have the expected digest from the release manifest.","در زمان قطعی، آینه یک فایل انتشار دارد. هش مورد انتظار را از مانیفست انتشار داری."],"actions":[["Compare the file digest","هش فایل را مقایسه کن"],["Compare only the filename","فقط نام فایل را مقایسه کن"]],"outcomes":[["The digest establishes whether the mirrored bytes match the expected release.","هش مشخص می‌کند بایت‌های فایل آینه با انتشار مورد انتظار تطبیق دارد یا خیر."],["Two files can have the same name and different bytes.","دو فایل هم‌نام می‌توانند محتوای متفاوت داشته باشند."]],"evidence":[["Release manifest","Mirror file","Need check"],["Expected digest","Mirror digest","Matched"],["Filename","Mirror path","Bytes unchecked"]],"name":"dokhaneh","kicker":["Release distribution","توزیع نسخه‌ها"],"intro":["Plan a release across GitHub and a second host; the signed manifest lets installers verify what they fetch.","برای انتشار روی گیت‌هاب و میزبان دوم برنامه بچینید؛ مانیفست امضاشده برای اعتبارسنجی فایل دریافتی است."],"hint":["Validate a sample artifact and its manifest locally before trying to publish anything to a host.","قبل از انتشار روی میزبان، یک فایل نمونه و مانیفستش را محلی اعتبارسنجی کنید."],"site":"/dokhaneh/","source":"https://github.com/mrzroot/dokhaneh","layout":"switchboard","hue":45,"image":"/assets/thumbs/dokhaneh.webp"}],"labels":{"map":["Project Atlas","اطلس پروژه‌ها"],"mapIntro":["Four ways to explore the projects. Choose a project to see what it does and open its interactive introduction.","چهار مسیر برای گشتن میان پروژه‌ها. یکی را انتخاب کن تا ببینی چه کار می‌کند و معرفی تعاملی‌اش را باز کنی."],"agents":["AI tooling","ابزارهای هوش مصنوعی"],"language":["Language and data","زبان و داده"],"systems":["Systems","سامانه‌ها"],"showcase":["Design and demos","طراحی و دمو"],"projects":["All projects","همهٔ پروژه‌ها"],"open":["Interactive introduction","معرفی تعاملی"],"test":["Try the example","نمونه را امتحان کن"],"story":["The situation","مسئله"],"reference":["Inspect the project","بررسی پروژه"],"source":["View source on GitHub","کد منبع در گیت‌هاب"],"demo":["Open project website","باز کردن سایت پروژه"],"guide":["Suggested first step","قدم اول پیشنهادی"],"sample":["Illustrative sample","دادهٔ نمونه"],"result":["What happens","نتیجه"],"choose":["Try a response to see its effect.","یک کار را انتخاب کن و اثرش را ببین."],"still":["Initial state","حالت اولیه"],"reset":["Reset example","بازنشانی نمونه"],"more":["Explore another project","یک پروژهٔ دیگر ببین"]}}</script>
+  </div>
 <section class="band"><div class="wrap">
   <div class="eyebrow"><span lang="en">Why two homes</span><span lang="fa">چرا دو خانه</span></div>
   <h2><span lang="en">Your users shouldn't lose your software overnight.</span><span lang="fa">کاربرانتان نباید یک‌شبه نرم‌افزارتان را از دست بدهند.</span></h2>
